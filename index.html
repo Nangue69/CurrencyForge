@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CurrencyForge | Conversor de monedas</title>
+
+    <meta name="description" content="Conversor de monedas moderno, responsive y fácil de usar.">
+
+    <meta name="theme-color" content="#2563eb">
+
+    <link rel="stylesheet" href="./CSS/styles.css">
+
+    <script type="module" src="./js/app.js" defer>
+    </script>
+</head>
+
+<body>
+
+    <main class="app">
+
+        <section class="converter" aria-labelledby="app-title">
+
+            <!-- =====================================================
+           CABECERA
+      ====================================================== -->
+
+            <header class="converter__header">
+
+                <div class="converter__toolbar" aria-label="Preferencias de la aplicación">
+
+                    <label class="language-control" for="language-selector">
+
+                        <span class="sr-only" data-i18n="controls.languageLabel">
+                            Idioma
+                        </span>
+
+                        <select id="language-selector" class="language-control__select" aria-label="Idioma">
+
+                            <option value="es">
+                                🇪🇸 Español
+                            </option>
+
+                            <option value="en">
+                                🇬🇧 English
+                            </option>
+
+                        </select>
+
+                    </label>
+
+                    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Cambiar a modo oscuro"
+                        data-i18n-aria="controls.themeToggle">
+
+                        🌙
+
+                    </button>
+
+                </div>
+
+                <div class="converter__brand" aria-hidden="true">
+
+                    <span class="converter__logo">
+                        💱
+                    </span>
+
+                </div>
+
+                <h1 id="app-title" class="converter__title" data-i18n="app.title">
+
+                    CurrencyForge
+
+                </h1>
+
+                <p class="converter__subtitle" data-i18n="app.subtitle">
+
+                    Convierte monedas de forma rápida y sencilla.
+
+                </p>
+
+            </header>
+
+            <!-- =====================================================
+           FORMULARIO
+      ====================================================== -->
+
+            <form id="converter-form" class="converter__form" novalidate>
+
+                <!-- Cantidad -->
+
+                <section class="panel">
+
+                    <label class="field__label" for="amount" data-i18n="converter.amountLabel">
+
+                        Cantidad
+
+                    </label>
+
+                    <div class="amount-field">
+
+                        <input id="amount" class="amount-field__input" type="number" inputmode="decimal" min="0"
+                            step="any" value="1" autocomplete="off" aria-describedby="amount-error">
+
+                    </div>
+
+                    <p id="amount-error" class="field-error" aria-live="polite">
+                    </p>
+
+                </section>
+
+                <!-- Moneda de origen -->
+
+                <section class="panel currency-panel">
+
+                    <label class="field__label" for="from-currency" data-i18n="converter.fromLabel">
+
+                        De
+
+                    </label>
+
+                    <select id="from-currency" class="currency-select" aria-label="Moneda de origen"
+                        data-i18n-aria="converter.fromAria">
+
+                        <!-- Las monedas se insertarán desde currencies.js -->
+
+                    </select>
+
+                </section>
+
+                <!-- Intercambiar monedas -->
+
+                <div class="swap-container">
+
+                    <button id="swap-currencies" class="swap-button" type="button" aria-label="Intercambiar monedas"
+                        data-i18n-aria="buttons.swap">
+
+                        <span aria-hidden="true">
+                            ⇅
+                        </span>
+
+                    </button>
+
+                </div>
+
+                <!-- Moneda de destino -->
+
+                <section class="panel currency-panel">
+
+                    <label class="field__label" for="to-currency" data-i18n="converter.toLabel">
+
+                        A
+
+                    </label>
+
+                    <select id="to-currency" class="currency-select" aria-label="Moneda de destino"
+                        data-i18n-aria="converter.toAria">
+
+                        <!-- Las monedas se insertarán desde currencies.js -->
+
+                    </select>
+
+                </section>
+
+                <!-- Botón de conversión -->
+
+                <button id="convert-button" class="button" type="submit" data-i18n="buttons.convert">
+
+                    Convertir
+
+                </button>
+
+            </form>
+
+            <!-- =====================================================
+           ESTADO Y MENSAJES
+      ====================================================== -->
+
+            <section class="messages" aria-live="polite" aria-atomic="true">
+
+                <p id="feedback" class="feedback">
+                </p>
+
+            </section>
+
+            <!-- =====================================================
+           RESULTADO
+      ====================================================== -->
+
+            <section id="result-panel" class="result" aria-labelledby="result-title" hidden>
+
+                <h2 id="result-title" class="result__title" data-i18n="result.title">
+
+                    Resultado
+
+                </h2>
+
+                <p id="result-main" class="result__main">
+
+                    1,00 EUR = 1,00 USD
+
+                </p>
+
+                <p id="result-route" class="result__route">
+
+                    🇪🇺 Euro → 🇺🇸 US Dollar
+
+                </p>
+
+                <p id="result-rate" class="result__rate">
+
+                    1 EUR = 1,0000 USD
+
+                </p>
+
+                <p id="result-updated" class="result__updated">
+
+                    Actualizado: —
+
+                </p>
+
+                <p id="result-source" class="result__source">
+
+                    Tipos de cambio proporcionados por MoneyConvert.net
+
+                </p>
+
+            </section>
+
+            <!-- =====================================================
+           HISTORIAL
+      ====================================================== -->
+
+            <details id="history" class="history">
+
+                <summary class="history__summary">
+
+                    <span data-i18n="history.title">
+                        Historial de conversiones
+                    </span>
+
+                    <span id="history-count" class="history__count" aria-label="Número de conversiones guardadas">
+
+                        0
+
+                    </span>
+
+                </summary>
+
+                <div class="history__content">
+
+                    <ol id="history-list" class="history__list">
+
+                        <!-- El historial se renderizará desde JavaScript -->
+
+                    </ol>
+
+                    <p id="history-empty" class="history__empty" data-i18n="history.empty">
+
+                        Todavía no hay conversiones guardadas.
+
+                    </p>
+
+                    <button id="clear-history" class="history__clear" type="button" data-i18n="history.clear">
+
+                        Vaciar historial
+
+                    </button>
+
+                </div>
+
+            </details>
+
+            <!-- =====================================================
+           INFORMACIÓN
+      ====================================================== -->
+
+            <footer class="converter__footer">
+
+                <p data-i18n="footer.privacy">
+
+                    Las conversiones se procesan localmente en tu navegador.
+
+                </p>
+
+                <p data-i18n="footer.rates">
+
+                    Los tipos de cambio pueden variar respecto a los ofrecidos por bancos
+                    y proveedores de pago.
+
+                </p>
+
+            </footer>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>
