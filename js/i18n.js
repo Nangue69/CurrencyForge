@@ -54,7 +54,11 @@ const TRANSLATIONS = {
             fromLabel: "De",
             toLabel: "A",
             fromAria: "Moneda de origen",
-            toAria: "Moneda de destino"
+            toAria: "Moneda de destino",
+
+            selectPlaceholder: "Seleccionar moneda",
+            searchPlaceholder: "Buscar por código o nombre...",
+            noResults: "No se encontraron monedas."
         },
 
         buttons: {
@@ -136,7 +140,11 @@ const TRANSLATIONS = {
             fromLabel: "From",
             toLabel: "To",
             fromAria: "Source currency",
-            toAria: "Target currency"
+            toAria: "Target currency",
+
+            selectPlaceholder: "Select currency",
+            searchPlaceholder: "Search by code or name...",
+            noResults: "No currencies found."
         },
 
         buttons: {

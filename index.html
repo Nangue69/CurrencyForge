@@ -115,18 +115,14 @@
 
                 <section class="panel currency-panel">
 
-                    <label class="field__label" for="from-currency" data-i18n="converter.fromLabel">
+                    <span id="from-currency-label" class="field__label" data-i18n="converter.fromLabel">
 
                         De
 
-                    </label>
+                    </span>
 
-                    <select id="from-currency" class="currency-select" aria-label="Moneda de origen"
-                        data-i18n-aria="converter.fromAria">
-
-                        <!-- Las monedas se insertarán desde currencies.js -->
-
-                    </select>
+                    <div id="from-currency" class="currency-select-root" aria-labelledby="from-currency-label">
+                    </div>
 
                 </section>
 
@@ -149,18 +145,14 @@
 
                 <section class="panel currency-panel">
 
-                    <label class="field__label" for="to-currency" data-i18n="converter.toLabel">
+                    <span id="to-currency-label" class="field__label" data-i18n="converter.toLabel">
 
                         A
 
-                    </label>
+                    </span>
 
-                    <select id="to-currency" class="currency-select" aria-label="Moneda de destino"
-                        data-i18n-aria="converter.toAria">
-
-                        <!-- Las monedas se insertarán desde currencies.js -->
-
-                    </select>
+                    <div id="to-currency" class="currency-select-root" aria-labelledby="to-currency-label">
+                    </div>
 
                 </section>
 

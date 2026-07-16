@@ -5,6 +5,8 @@
    Version 1.0.0
 ========================================================== */
 
+@import url("./components/forge-select.css");
+
 /* ==========================================================
    VARIABLES
 ========================================================== */
@@ -912,4 +914,109 @@ summary {
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
     }
+}
+
+/* ==========================================================
+   ESTADO DE CARGA
+========================================================== */
+
+.button[aria-busy="true"] {
+    position: relative;
+    color: transparent;
+}
+
+.button[aria-busy="true"]::after {
+    content: "";
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    width: 2rem;
+    height: 2rem;
+
+    border: 0.25rem solid rgba(255, 255, 255, 0.4);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+
+    transform: translate(-50%, -50%);
+
+    animation: button-spinner 700ms linear infinite;
+}
+
+@keyframes button-spinner {
+    to {
+        transform:
+            translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* ==========================================================
+   BANDERAS EN RESULTADO
+========================================================== */
+
+.result__route {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 0.8rem;
+}
+
+.result__flag {
+    width: 2.6rem;
+    height: 1.8rem;
+
+    object-fit: cover;
+
+    border-radius: 0.3rem;
+
+    box-shadow:
+        0 0 0 0.1rem rgba(15, 23, 42, 0.14);
+}
+
+.result__arrow {
+    color: var(--color-primary);
+    font-weight: 900;
+}
+
+/* ==========================================================
+   BANDERAS EN HISTORIAL
+========================================================== */
+
+.history__main {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 0.8rem;
+
+    margin-bottom: var(--spacing-1);
+
+    font-size: 1.5rem;
+}
+
+.history__currency {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 0.6rem;
+}
+
+.history__flag {
+    width: 2.4rem;
+    height: 1.7rem;
+
+    object-fit: cover;
+
+    border-radius: 0.3rem;
+
+    box-shadow:
+        0 0 0 0.1rem rgba(15, 23, 42, 0.14);
+}
+
+.history__arrow {
+    color: var(--color-primary);
+    font-weight: 900;
 }

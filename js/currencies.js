@@ -1,4 +1,3 @@
-
 /* ==========================================================
    CURRENCYFORGE
    CURRENCIES.JS
@@ -15,7 +14,7 @@ export const CURRENCIES = [
     {
         code: "EUR",
         symbol: "€",
-        flag: "🇪🇺",
+        flagCode: "eu",
         region: "europe",
         names: {
             es: "Euro",
@@ -26,7 +25,7 @@ export const CURRENCIES = [
     {
         code: "GBP",
         symbol: "£",
-        flag: "🇬🇧",
+        flagCode: "gb",
         region: "europe",
         names: {
             es: "Libra esterlina",
@@ -37,7 +36,7 @@ export const CURRENCIES = [
     {
         code: "CHF",
         symbol: "CHF",
-        flag: "🇨🇭",
+        flagCode: "ch",
         region: "europe",
         names: {
             es: "Franco suizo",
@@ -48,7 +47,7 @@ export const CURRENCIES = [
     {
         code: "NOK",
         symbol: "kr",
-        flag: "🇳🇴",
+        flagCode: "no",
         region: "europe",
         names: {
             es: "Corona noruega",
@@ -59,7 +58,7 @@ export const CURRENCIES = [
     {
         code: "SEK",
         symbol: "kr",
-        flag: "🇸🇪",
+        flagCode: "se",
         region: "europe",
         names: {
             es: "Corona sueca",
@@ -70,7 +69,7 @@ export const CURRENCIES = [
     {
         code: "DKK",
         symbol: "kr",
-        flag: "🇩🇰",
+        flagCode: "dk",
         region: "europe",
         names: {
             es: "Corona danesa",
@@ -81,7 +80,7 @@ export const CURRENCIES = [
     {
         code: "ISK",
         symbol: "kr",
-        flag: "🇮🇸",
+        flagCode: "is",
         region: "europe",
         names: {
             es: "Corona islandesa",
@@ -92,7 +91,7 @@ export const CURRENCIES = [
     {
         code: "PLN",
         symbol: "zł",
-        flag: "🇵🇱",
+        flagCode: "pl",
         region: "europe",
         names: {
             es: "Zloty polaco",
@@ -103,7 +102,7 @@ export const CURRENCIES = [
     {
         code: "CZK",
         symbol: "Kč",
-        flag: "🇨🇿",
+        flagCode: "cz",
         region: "europe",
         names: {
             es: "Corona checa",
@@ -114,7 +113,7 @@ export const CURRENCIES = [
     {
         code: "HUF",
         symbol: "Ft",
-        flag: "🇭🇺",
+        flagCode: "hu",
         region: "europe",
         names: {
             es: "Forinto húngaro",
@@ -125,7 +124,7 @@ export const CURRENCIES = [
     {
         code: "RON",
         symbol: "lei",
-        flag: "🇷🇴",
+        flagCode: "ro",
         region: "europe",
         names: {
             es: "Leu rumano",
@@ -136,7 +135,7 @@ export const CURRENCIES = [
     {
         code: "ALL",
         symbol: "L",
-        flag: "🇦🇱",
+        flagCode: "al",
         region: "europe",
         names: {
             es: "Lek albanés",
@@ -147,7 +146,7 @@ export const CURRENCIES = [
     {
         code: "BAM",
         symbol: "KM",
-        flag: "🇧🇦",
+        flagCode: "ba",
         region: "europe",
         names: {
             es: "Marco convertible bosnio",
@@ -158,7 +157,7 @@ export const CURRENCIES = [
     {
         code: "MKD",
         symbol: "ден",
-        flag: "🇲🇰",
+        flagCode: "mk",
         region: "europe",
         names: {
             es: "Denar macedonio",
@@ -169,7 +168,7 @@ export const CURRENCIES = [
     {
         code: "RSD",
         symbol: "дин",
-        flag: "🇷🇸",
+        flagCode: "rs",
         region: "europe",
         names: {
             es: "Dinar serbio",
@@ -180,7 +179,7 @@ export const CURRENCIES = [
     {
         code: "MDL",
         symbol: "L",
-        flag: "🇲🇩",
+        flagCode: "md",
         region: "europe",
         names: {
             es: "Leu moldavo",
@@ -191,7 +190,7 @@ export const CURRENCIES = [
     {
         code: "UAH",
         symbol: "₴",
-        flag: "🇺🇦",
+        flagCode: "ua",
         region: "europe",
         names: {
             es: "Grivna ucraniana",
@@ -202,7 +201,7 @@ export const CURRENCIES = [
     {
         code: "GEL",
         symbol: "₾",
-        flag: "🇬🇪",
+        flagCode: "ge",
         region: "europe",
         names: {
             es: "Lari georgiano",
@@ -213,7 +212,7 @@ export const CURRENCIES = [
     {
         code: "AMD",
         symbol: "֏",
-        flag: "🇦🇲",
+        flagCode: "am",
         region: "europe",
         names: {
             es: "Dram armenio",
@@ -224,7 +223,7 @@ export const CURRENCIES = [
     {
         code: "AZN",
         symbol: "₼",
-        flag: "🇦🇿",
+        flagCode: "az",
         region: "europe",
         names: {
             es: "Manat azerbaiyano",
@@ -235,7 +234,7 @@ export const CURRENCIES = [
     {
         code: "TRY",
         symbol: "₺",
-        flag: "🇹🇷",
+        flagCode: "tr",
         region: "europe",
         names: {
             es: "Lira turca",
@@ -250,7 +249,7 @@ export const CURRENCIES = [
     {
         code: "USD",
         symbol: "$",
-        flag: "🇺🇸",
+        flagCode: "us",
         region: "america",
         names: {
             es: "Dólar estadounidense",
@@ -261,7 +260,7 @@ export const CURRENCIES = [
     {
         code: "CAD",
         symbol: "C$",
-        flag: "🇨🇦",
+        flagCode: "ca",
         region: "america",
         names: {
             es: "Dólar canadiense",
@@ -272,7 +271,7 @@ export const CURRENCIES = [
     {
         code: "MXN",
         symbol: "MX$",
-        flag: "🇲🇽",
+        flagCode: "mx",
         region: "america",
         names: {
             es: "Peso mexicano",
@@ -283,7 +282,7 @@ export const CURRENCIES = [
     {
         code: "BRL",
         symbol: "R$",
-        flag: "🇧🇷",
+        flagCode: "br",
         region: "america",
         names: {
             es: "Real brasileño",
@@ -294,7 +293,7 @@ export const CURRENCIES = [
     {
         code: "ARS",
         symbol: "AR$",
-        flag: "🇦🇷",
+        flagCode: "ar",
         region: "america",
         names: {
             es: "Peso argentino",
@@ -305,7 +304,7 @@ export const CURRENCIES = [
     {
         code: "CLP",
         symbol: "CL$",
-        flag: "🇨🇱",
+        flagCode: "cl",
         region: "america",
         names: {
             es: "Peso chileno",
@@ -316,7 +315,7 @@ export const CURRENCIES = [
     {
         code: "COP",
         symbol: "COL$",
-        flag: "🇨🇴",
+        flagCode: "co",
         region: "america",
         names: {
             es: "Peso colombiano",
@@ -327,7 +326,7 @@ export const CURRENCIES = [
     {
         code: "PEN",
         symbol: "S/",
-        flag: "🇵🇪",
+        flagCode: "pe",
         region: "america",
         names: {
             es: "Sol peruano",
@@ -342,7 +341,7 @@ export const CURRENCIES = [
     {
         code: "JPY",
         symbol: "¥",
-        flag: "🇯🇵",
+        flagCode: "jp",
         region: "asia",
         names: {
             es: "Yen japonés",
@@ -353,7 +352,7 @@ export const CURRENCIES = [
     {
         code: "CNY",
         symbol: "¥",
-        flag: "🇨🇳",
+        flagCode: "cn",
         region: "asia",
         names: {
             es: "Yuan chino",
@@ -364,7 +363,7 @@ export const CURRENCIES = [
     {
         code: "HKD",
         symbol: "HK$",
-        flag: "🇭🇰",
+        flagCode: "hk",
         region: "asia",
         names: {
             es: "Dólar de Hong Kong",
@@ -375,7 +374,7 @@ export const CURRENCIES = [
     {
         code: "KRW",
         symbol: "₩",
-        flag: "🇰🇷",
+        flagCode: "kr",
         region: "asia",
         names: {
             es: "Won surcoreano",
@@ -386,7 +385,7 @@ export const CURRENCIES = [
     {
         code: "INR",
         symbol: "₹",
-        flag: "🇮🇳",
+        flagCode: "in",
         region: "asia",
         names: {
             es: "Rupia india",
@@ -397,7 +396,7 @@ export const CURRENCIES = [
     {
         code: "SGD",
         symbol: "S$",
-        flag: "🇸🇬",
+        flagCode: "sg",
         region: "asia",
         names: {
             es: "Dólar de Singapur",
@@ -408,7 +407,7 @@ export const CURRENCIES = [
     {
         code: "THB",
         symbol: "฿",
-        flag: "🇹🇭",
+        flagCode: "th",
         region: "asia",
         names: {
             es: "Baht tailandés",
@@ -419,7 +418,7 @@ export const CURRENCIES = [
     {
         code: "IDR",
         symbol: "Rp",
-        flag: "🇮🇩",
+        flagCode: "id",
         region: "asia",
         names: {
             es: "Rupia indonesia",
@@ -430,7 +429,7 @@ export const CURRENCIES = [
     {
         code: "PHP",
         symbol: "₱",
-        flag: "🇵🇭",
+        flagCode: "ph",
         region: "asia",
         names: {
             es: "Peso filipino",
@@ -441,7 +440,7 @@ export const CURRENCIES = [
     {
         code: "MYR",
         symbol: "RM",
-        flag: "🇲🇾",
+        flagCode: "my",
         region: "asia",
         names: {
             es: "Ringgit malasio",
@@ -456,7 +455,7 @@ export const CURRENCIES = [
     {
         code: "AUD",
         symbol: "A$",
-        flag: "🇦🇺",
+        flagCode: "au",
         region: "oceania",
         names: {
             es: "Dólar australiano",
@@ -467,7 +466,7 @@ export const CURRENCIES = [
     {
         code: "NZD",
         symbol: "NZ$",
-        flag: "🇳🇿",
+        flagCode: "nz",
         region: "oceania",
         names: {
             es: "Dólar neozelandés",
@@ -482,7 +481,7 @@ export const CURRENCIES = [
     {
         code: "ZAR",
         symbol: "R",
-        flag: "🇿🇦",
+        flagCode: "za",
         region: "africa",
         names: {
             es: "Rand sudafricano",
@@ -493,7 +492,7 @@ export const CURRENCIES = [
     {
         code: "EGP",
         symbol: "E£",
-        flag: "🇪🇬",
+        flagCode: "eg",
         region: "africa",
         names: {
             es: "Libra egipcia",
@@ -504,7 +503,7 @@ export const CURRENCIES = [
     {
         code: "MAD",
         symbol: "د.م.",
-        flag: "🇲🇦",
+        flagCode: "ma",
         region: "africa",
         names: {
             es: "Dírham marroquí",
@@ -515,7 +514,7 @@ export const CURRENCIES = [
     {
         code: "AED",
         symbol: "د.إ",
-        flag: "🇦🇪",
+        flagCode: "ae",
         region: "middle-east",
         names: {
             es: "Dírham de los Emiratos",
@@ -526,7 +525,7 @@ export const CURRENCIES = [
     {
         code: "SAR",
         symbol: "﷼",
-        flag: "🇸🇦",
+        flagCode: "sa",
         region: "middle-east",
         names: {
             es: "Riyal saudí",
@@ -537,7 +536,7 @@ export const CURRENCIES = [
     {
         code: "ILS",
         symbol: "₪",
-        flag: "🇮🇱",
+        flagCode: "il",
         region: "middle-east",
         names: {
             es: "Nuevo séquel israelí",
@@ -551,15 +550,22 @@ export const CURRENCIES = [
 ========================================================== */
 
 export function getCurrencyByCode(code) {
-    return CURRENCIES.find((currency) => currency.code === code) || null;
+    return CURRENCIES.find(
+        (currency) => currency.code === code
+    ) || null;
 }
 
 /* ==========================================================
    OBTENER EL NOMBRE SEGÚN EL IDIOMA
 ========================================================== */
 
-export function getCurrencyName(currency, language = "es") {
-    if (!currency) return "";
+export function getCurrencyName(
+    currency,
+    language = "es"
+) {
+    if (!currency) {
+        return "";
+    }
 
     return currency.names[language]
         || currency.names.es
@@ -567,13 +573,33 @@ export function getCurrencyName(currency, language = "es") {
 }
 
 /* ==========================================================
-   CREAR ETIQUETA PARA EL SELECTOR
+   OBTENER RUTA DE LA BANDERA
 ========================================================== */
 
-export function getCurrencyLabel(currency, language = "es") {
-    if (!currency) return "";
+export function getCurrencyFlagPath(currency) {
+    if (!currency?.flagCode) {
+        return "";
+    }
 
-    const name = getCurrencyName(currency, language);
+    return `./img/flags/${currency.flagCode}.svg`;
+}
 
-    return `${currency.flag} ${currency.code} — ${name} (${currency.symbol})`;
+/* ==========================================================
+   CREAR ETIQUETA TEXTUAL
+========================================================== */
+
+export function getCurrencyLabel(
+    currency,
+    language = "es"
+) {
+    if (!currency) {
+        return "";
+    }
+
+    const name = getCurrencyName(
+        currency,
+        language
+    );
+
+    return `${currency.code} — ${name} (${currency.symbol})`;
 }

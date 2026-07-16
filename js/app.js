@@ -8,8 +8,14 @@
 import DOM from "./dom.js";
 
 import {
-    CURRENCIES
+    CURRENCIES,
+    getCurrencyName,
+    getCurrencyFlagPath
 } from "./currencies.js";
+
+import {
+    createForgeSelect
+} from "./components/forge-select.js";
 
 import {
     loadSettings,
@@ -32,8 +38,6 @@ import {
 } from "./i18n.js";
 
 import {
-    renderCurrencyOptions,
-    refreshCurrencyOptions,
     showFeedback,
     clearFeedback,
     showAmountError,
@@ -68,8 +72,166 @@ const appState = {
     rates: null,
     updatedAt: null,
     isOffline: false,
-    lastConversion: null
+    lastConversion: null,
+
+    fromSelect: null,
+    toSelect: null
 };
+
+/* ==========================================================
+   CONTENIDO VISUAL DE LAS MONEDAS
+========================================================== */
+
+function createCurrencyContent(currency) {
+
+    const language = getCurrentLanguage();
+
+    const wrapper = document.createElement("span");
+    wrapper.classList.add("currency-option");
+
+    /* ==============================
+       BANDERA
+    ============================== */
+
+    const flag = document.createElement("img");
+
+    flag.classList.add("currency-option__flag");
+
+    flag.src = getCurrencyFlagPath(currency);
+
+    flag.alt = "";
+
+    flag.loading = "lazy";
+
+    flag.decoding = "async";
+
+    flag.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+    /* ==============================
+       INFORMACIÓN
+    ============================== */
+
+    const information = document.createElement("span");
+    information.classList.add("currency-option__information");
+
+    const code = document.createElement("strong");
+    code.classList.add("currency-option__code");
+    code.textContent = currency.code;
+
+    const name = document.createElement("span");
+    name.classList.add("currency-option__name");
+
+    name.textContent =
+        getCurrencyName(
+            currency,
+            language
+        );
+
+    information.appendChild(code);
+    information.appendChild(name);
+
+    /* ==============================
+       SÍMBOLO
+    ============================== */
+
+    const symbol = document.createElement("span");
+    symbol.classList.add("currency-option__symbol");
+
+    symbol.textContent =
+        currency.symbol;
+
+    /* ==============================
+       ENSAMBLAR
+    ============================== */
+
+    wrapper.appendChild(flag);
+    wrapper.appendChild(information);
+    wrapper.appendChild(symbol);
+
+    return wrapper;
+}
+
+function getCurrencySearchText(currency) {
+    return [
+        currency.code,
+        currency.symbol,
+        currency.names.es,
+        currency.names.en,
+        currency.region,
+        ...(currency.searchTerms || [])
+    ].join(" ");
+}
+
+/* ==========================================================
+   CREAR FORGE SELECTS
+========================================================== */
+
+function initializeCurrencySelectors(settings) {
+    appState.fromSelect = createForgeSelect({
+        root: DOM.fromCurrencyRoot,
+        items: CURRENCIES,
+        value: settings.fromCurrency,
+
+        placeholder:
+            translate("converter.selectPlaceholder"),
+
+        searchPlaceholder:
+            translate("converter.searchPlaceholder"),
+
+        emptyMessage:
+            translate("converter.noResults"),
+
+        getValue: (currency) => currency.code,
+
+        getLabel: (currency) =>
+            `${currency.code} — `
+            + getCurrencyName(
+                currency,
+                getCurrentLanguage()
+            ),
+
+        getSearchText: getCurrencySearchText,
+
+        renderSelected: createCurrencyContent,
+        renderOption: createCurrencyContent,
+
+        onChange: handleCurrencySelectionChange
+    });
+
+    appState.toSelect = createForgeSelect({
+        root: DOM.toCurrencyRoot,
+        items: CURRENCIES,
+        value: settings.toCurrency,
+
+        placeholder:
+            translate("converter.selectPlaceholder"),
+
+        searchPlaceholder:
+            translate("converter.searchPlaceholder"),
+
+        emptyMessage:
+            translate("converter.noResults"),
+
+        getValue: (currency) => currency.code,
+
+        getLabel: (currency) =>
+            `${currency.code} — `
+            + getCurrencyName(
+                currency,
+                getCurrentLanguage()
+            ),
+
+        getSearchText: getCurrencySearchText,
+
+        renderSelected: createCurrencyContent,
+        renderOption: createCurrencyContent,
+
+        onChange: handleCurrencySelectionChange
+    });
+}
 
 /* ==========================================================
    CARGAR TASAS
@@ -79,11 +241,7 @@ async function loadRates({
     forceRefresh = false,
     showSuccessMessage = false
 } = {}) {
-    setLoadingState(
-        DOM,
-        true
-    );
-
+    setLoadingState(DOM, true);
     clearFeedback(DOM);
 
     showFeedback(
@@ -136,10 +294,7 @@ async function loadRates({
         return false;
 
     } finally {
-        setLoadingState(
-            DOM,
-            false
-        );
+        setLoadingState(DOM, false);
     }
 }
 
@@ -152,8 +307,12 @@ async function handleConversion() {
     clearAmountError(DOM);
 
     const amount = DOM.amountInput.value;
-    const fromCurrency = DOM.fromCurrency.value;
-    const toCurrency = DOM.toCurrency.value;
+
+    const fromCurrency =
+        appState.fromSelect.getValue();
+
+    const toCurrency =
+        appState.toSelect.getValue();
 
     if (
         !amount
@@ -170,7 +329,8 @@ async function handleConversion() {
     }
 
     if (!appState.rates) {
-        const ratesAvailable = await loadRates();
+        const ratesAvailable =
+            await loadRates();
 
         if (!ratesAvailable) {
             hideConversionResult(DOM);
@@ -186,9 +346,8 @@ async function handleConversion() {
     });
 
     if (!result.success) {
-        const message = translate(
-            result.errorKey
-        );
+        const message =
+            translate(result.errorKey);
 
         if (
             result.errorKey
@@ -231,10 +390,7 @@ async function handleConversion() {
             conversionRecord
         );
 
-    renderHistory(
-        DOM,
-        history
-    );
+    renderHistory(DOM, history);
 
     saveSelectedCurrencies(
         fromCurrency,
@@ -248,20 +404,17 @@ async function handleConversion() {
 
 function handleCurrencySwap() {
     const currentFrom =
-        DOM.fromCurrency.value;
+        appState.fromSelect.getValue();
 
     const currentTo =
-        DOM.toCurrency.value;
+        appState.toSelect.getValue();
 
-    DOM.fromCurrency.value =
-        currentTo;
-
-    DOM.toCurrency.value =
-        currentFrom;
+    appState.fromSelect.setValue(currentTo);
+    appState.toSelect.setValue(currentFrom);
 
     saveSelectedCurrencies(
-        DOM.fromCurrency.value,
-        DOM.toCurrency.value
+        currentTo,
+        currentFrom
     );
 
     clearFeedback(DOM);
@@ -270,16 +423,17 @@ function handleCurrencySwap() {
 }
 
 /* ==========================================================
-   GUARDAR MONEDAS SELECCIONADAS
+   CAMBIO DE MONEDAS
 ========================================================== */
 
 function handleCurrencySelectionChange() {
     saveSelectedCurrencies(
-        DOM.fromCurrency.value,
-        DOM.toCurrency.value
+        appState.fromSelect.getValue(),
+        appState.toSelect.getValue()
     );
 
     clearFeedback(DOM);
+    clearAmountError(DOM);
     hideConversionResult(DOM);
 }
 
@@ -287,19 +441,33 @@ function handleCurrencySelectionChange() {
    IDIOMA
 ========================================================== */
 
+function refreshForgeSelectLanguage() {
+    const configuration = {
+        nextPlaceholder:
+            translate("converter.selectPlaceholder"),
+
+        nextSearchPlaceholder:
+            translate("converter.searchPlaceholder"),
+
+        nextEmptyMessage:
+            translate("converter.noResults")
+    };
+
+    appState.fromSelect.setItems(CURRENCIES);
+    appState.toSelect.setItems(CURRENCIES);
+
+    appState.fromSelect.refresh(configuration);
+    appState.toSelect.refresh(configuration);
+}
+
 function handleLanguageChange() {
-    const language =
-        setLanguage(
-            DOM.languageSelector.value
-        );
-
-    DOM.languageSelector.value =
-        language;
-
-    refreshCurrencyOptions(
-        DOM,
-        CURRENCIES
+    const language = setLanguage(
+        DOM.languageSelector.value
     );
+
+    DOM.languageSelector.value = language;
+
+    refreshForgeSelectLanguage();
 
     renderHistory(
         DOM,
@@ -338,7 +506,6 @@ function updateCurrentThemeButton() {
 
 function handleThemeToggle() {
     toggleTheme();
-
     updateCurrentThemeButton();
 }
 
@@ -347,13 +514,9 @@ function handleThemeToggle() {
 ========================================================== */
 
 function handleClearHistory() {
-    const history =
-        clearHistory();
+    const history = clearHistory();
 
-    renderHistory(
-        DOM,
-        history
-    );
+    renderHistory(DOM, history);
 
     DOM.history.open = false;
 
@@ -373,7 +536,6 @@ function addEvents() {
         "submit",
         (event) => {
             event.preventDefault();
-
             handleConversion();
         }
     );
@@ -381,16 +543,6 @@ function addEvents() {
     DOM.swapCurrencies.addEventListener(
         "click",
         handleCurrencySwap
-    );
-
-    DOM.fromCurrency.addEventListener(
-        "change",
-        handleCurrencySelectionChange
-    );
-
-    DOM.toCurrency.addEventListener(
-        "change",
-        handleCurrencySelectionChange
     );
 
     DOM.languageSelector.addEventListener(
@@ -445,27 +597,17 @@ function addEvents() {
 ========================================================== */
 
 function initializeSettings() {
-    const settings =
-        loadSettings();
+    const settings = loadSettings();
 
     DOM.languageSelector.value =
         settings.language;
 
-    translatePage(
-        settings.language
-    );
+    translatePage(settings.language);
 
-    renderCurrencyOptions(
-        DOM,
-        CURRENCIES,
-        settings.fromCurrency,
-        settings.toCurrency
-    );
+    initializeCurrencySelectors(settings);
 
     const theme =
-        applyTheme(
-            settings.theme
-        );
+        applyTheme(settings.theme);
 
     updateThemeButton(
         DOM,
@@ -481,12 +623,9 @@ function initializeSettings() {
 ========================================================== */
 
 function initializeHistory() {
-    const history =
-        loadHistory();
-
     renderHistory(
         DOM,
-        history
+        loadHistory()
     );
 
     DOM.history.open = false;

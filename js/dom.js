@@ -7,54 +7,54 @@
 
 const DOM = {
 
-    /* ======================================================
-       CONTROLES GENERALES
-    ====================================================== */
+   /* ======================================================
+      CONTROLES GENERALES
+   ====================================================== */
 
-    languageSelector: document.getElementById("language-selector"),
-    themeToggle: document.getElementById("theme-toggle"),
+   languageSelector: document.getElementById("language-selector"),
+   themeToggle: document.getElementById("theme-toggle"),
 
-    /* ======================================================
-       FORMULARIO
-    ====================================================== */
+   /* ======================================================
+      FORMULARIO
+   ====================================================== */
 
-    converterForm: document.getElementById("converter-form"),
+   converterForm: document.getElementById("converter-form"),
 
-    amountInput: document.getElementById("amount"),
-    amountError: document.getElementById("amount-error"),
+   amountInput: document.getElementById("amount"),
+   amountError: document.getElementById("amount-error"),
 
-    fromCurrency: document.getElementById("from-currency"),
-    toCurrency: document.getElementById("to-currency"),
+   fromCurrencyRoot: document.getElementById("from-currency"),
+   toCurrencyRoot: document.getElementById("to-currency"),
 
-    swapCurrencies: document.getElementById("swap-currencies"),
-    convertButton: document.getElementById("convert-button"),
+   swapCurrencies: document.getElementById("swap-currencies"),
+   convertButton: document.getElementById("convert-button"),
 
-    /* ======================================================
-       MENSAJES
-    ====================================================== */
+   /* ======================================================
+      MENSAJES
+   ====================================================== */
 
-    feedback: document.getElementById("feedback"),
+   feedback: document.getElementById("feedback"),
 
-    /* ======================================================
-       RESULTADO
-    ====================================================== */
+   /* ======================================================
+      RESULTADO
+   ====================================================== */
 
-    resultPanel: document.getElementById("result-panel"),
-    resultMain: document.getElementById("result-main"),
-    resultRoute: document.getElementById("result-route"),
-    resultRate: document.getElementById("result-rate"),
-    resultUpdated: document.getElementById("result-updated"),
-    resultSource: document.getElementById("result-source"),
+   resultPanel: document.getElementById("result-panel"),
+   resultMain: document.getElementById("result-main"),
+   resultRoute: document.getElementById("result-route"),
+   resultRate: document.getElementById("result-rate"),
+   resultUpdated: document.getElementById("result-updated"),
+   resultSource: document.getElementById("result-source"),
 
-    /* ======================================================
-       HISTORIAL
-    ====================================================== */
+   /* ======================================================
+      HISTORIAL
+   ====================================================== */
 
-    history: document.getElementById("history"),
-    historyCount: document.getElementById("history-count"),
-    historyList: document.getElementById("history-list"),
-    historyEmpty: document.getElementById("history-empty"),
-    clearHistory: document.getElementById("clear-history")
+   history: document.getElementById("history"),
+   historyCount: document.getElementById("history-count"),
+   historyList: document.getElementById("history-list"),
+   historyEmpty: document.getElementById("history-empty"),
+   clearHistory: document.getElementById("clear-history")
 
 };
 

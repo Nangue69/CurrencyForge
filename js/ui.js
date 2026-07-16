@@ -7,8 +7,8 @@
 
 import {
     getCurrencyByCode,
-    getCurrencyLabel,
-    getCurrencyName
+    getCurrencyName,
+    getCurrencyFlagPath
 } from "./currencies.js";
 
 import {
@@ -16,57 +16,33 @@ import {
     translate
 } from "./i18n.js";
 
-/* ==========================================================
-   RENDERIZAR SELECTORES DE MONEDAS
-========================================================== */
-
-export function renderCurrencyOptions(
-    DOM,
-    currencies,
-    selectedFrom = "EUR",
-    selectedTo = "USD"
-) {
-    const language = getCurrentLanguage();
-
-    DOM.fromCurrency.replaceChildren();
-    DOM.toCurrency.replaceChildren();
-
-    currencies.forEach((currency) => {
-        const fromOption = document.createElement("option");
-        const toOption = document.createElement("option");
-
-        const label = getCurrencyLabel(
-            currency,
-            language
-        );
-
-        fromOption.value = currency.code;
-        fromOption.textContent = label;
-        fromOption.selected = currency.code === selectedFrom;
-
-        toOption.value = currency.code;
-        toOption.textContent = label;
-        toOption.selected = currency.code === selectedTo;
-
-        DOM.fromCurrency.appendChild(fromOption);
-        DOM.toCurrency.appendChild(toOption);
-    });
-}
+import {
+    formatNumber,
+    formatRate
+} from "./format.js";
 
 /* ==========================================================
-   ACTUALIZAR SELECTORES AL CAMBIAR IDIOMA
+   CREAR BANDERA
 ========================================================== */
 
-export function refreshCurrencyOptions(
-    DOM,
-    currencies
+function createCurrencyFlag(
+    currency,
+    className
 ) {
-    renderCurrencyOptions(
-        DOM,
-        currencies,
-        DOM.fromCurrency.value,
-        DOM.toCurrency.value
+    const image = document.createElement("img");
+
+    image.classList.add(className);
+    image.src = getCurrencyFlagPath(currency);
+    image.alt = "";
+    image.loading = "lazy";
+    image.decoding = "async";
+
+    image.setAttribute(
+        "aria-hidden",
+        "true"
     );
+
+    return image;
 }
 
 /* ==========================================================
@@ -79,16 +55,23 @@ export function showFeedback(
     type = "info"
 ) {
     DOM.feedback.textContent = message;
-
     DOM.feedback.dataset.type = type;
 
-    DOM.feedback.classList.add("feedback--visible");
+    DOM.feedback.classList.add(
+        "feedback--visible"
+    );
 }
 
 export function clearFeedback(DOM) {
     DOM.feedback.textContent = "";
-    DOM.feedback.removeAttribute("data-type");
-    DOM.feedback.classList.remove("feedback--visible");
+
+    DOM.feedback.removeAttribute(
+        "data-type"
+    );
+
+    DOM.feedback.classList.remove(
+        "feedback--visible"
+    );
 }
 
 /* ==========================================================
@@ -100,12 +83,19 @@ export function showAmountError(
     message
 ) {
     DOM.amountError.textContent = message;
-    DOM.amountInput.setAttribute("aria-invalid", "true");
+
+    DOM.amountInput.setAttribute(
+        "aria-invalid",
+        "true"
+    );
 }
 
 export function clearAmountError(DOM) {
     DOM.amountError.textContent = "";
-    DOM.amountInput.removeAttribute("aria-invalid");
+
+    DOM.amountInput.removeAttribute(
+        "aria-invalid"
+    );
 }
 
 /* ==========================================================
@@ -118,8 +108,6 @@ export function setLoadingState(
 ) {
     DOM.convertButton.disabled = isLoading;
     DOM.swapCurrencies.disabled = isLoading;
-    DOM.fromCurrency.disabled = isLoading;
-    DOM.toCurrency.disabled = isLoading;
     DOM.amountInput.disabled = isLoading;
 
     DOM.convertButton.setAttribute(
@@ -150,45 +138,36 @@ export function renderConversionResult(
         isOffline
     } = conversion;
 
-    const language = getCurrentLanguage();
+    const language =
+        getCurrentLanguage();
 
-    const fromCurrency = getCurrencyByCode(from);
-    const toCurrency = getCurrencyByCode(to);
+    const fromCurrency =
+        getCurrencyByCode(from);
 
-    if (!fromCurrency || !toCurrency) {
+    const toCurrency =
+        getCurrencyByCode(to);
+
+    if (
+        !fromCurrency
+        || !toCurrency
+    ) {
         return;
     }
 
-    const amountFormatter = new Intl.NumberFormat(
-        language === "es" ? "es-ES" : "en-US",
-        {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        }
-    );
-
-    const rateFormatter = new Intl.NumberFormat(
-        language === "es" ? "es-ES" : "en-US",
-        {
-            minimumFractionDigits: 4,
-            maximumFractionDigits: 6
-        }
-    );
-
     DOM.resultMain.textContent =
-        `${amountFormatter.format(amount)} ${from} = `
-        + `${amountFormatter.format(result)} ${to}`;
+        `${formatNumber(amount, language)} ${from} = `
+        + `${formatNumber(result, language)} ${to}`;
 
-    DOM.resultRoute.textContent =
-        `${fromCurrency.flag} `
-        + `${getCurrencyName(fromCurrency, language)} `
-        + `→ `
-        + `${toCurrency.flag} `
-        + `${getCurrencyName(toCurrency, language)}`;
+    renderResultRoute(
+        DOM,
+        fromCurrency,
+        toCurrency,
+        language
+    );
 
     DOM.resultRate.textContent =
         `1 ${from} = `
-        + `${rateFormatter.format(unitRate)} ${to}`;
+        + `${formatRate(unitRate, language)} ${to}`;
 
     DOM.resultUpdated.textContent =
         `${translate("result.updated")}: `
@@ -212,6 +191,67 @@ export function renderConversionResult(
 }
 
 /* ==========================================================
+   RUTA DEL RESULTADO
+========================================================== */
+
+function renderResultRoute(
+    DOM,
+    fromCurrency,
+    toCurrency,
+    language
+) {
+    DOM.resultRoute.replaceChildren();
+
+    const fromFlag = createCurrencyFlag(
+        fromCurrency,
+        "result__flag"
+    );
+
+    const fromName =
+        document.createElement("span");
+
+    fromName.textContent =
+        getCurrencyName(
+            fromCurrency,
+            language
+        );
+
+    const routeArrow =
+        document.createElement("span");
+
+    routeArrow.classList.add(
+        "result__arrow"
+    );
+
+    routeArrow.textContent = "→";
+
+    routeArrow.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+    const toFlag = createCurrencyFlag(
+        toCurrency,
+        "result__flag"
+    );
+
+    const toName =
+        document.createElement("span");
+
+    toName.textContent =
+        getCurrencyName(
+            toCurrency,
+            language
+        );
+
+    DOM.resultRoute.appendChild(fromFlag);
+    DOM.resultRoute.appendChild(fromName);
+    DOM.resultRoute.appendChild(routeArrow);
+    DOM.resultRoute.appendChild(toFlag);
+    DOM.resultRoute.appendChild(toName);
+}
+
+/* ==========================================================
    OCULTAR RESULTADO
 ========================================================== */
 
@@ -227,7 +267,8 @@ export function renderHistory(
     DOM,
     history
 ) {
-    const language = getCurrentLanguage();
+    const language =
+        getCurrentLanguage();
 
     DOM.historyList.replaceChildren();
 
@@ -239,68 +280,182 @@ export function renderHistory(
         translate("history.countLabel")
     );
 
-    const hasHistory = history.length > 0;
+    const hasHistory =
+        history.length > 0;
 
-    DOM.historyEmpty.hidden = hasHistory;
-    DOM.clearHistory.hidden = !hasHistory;
+    DOM.historyEmpty.hidden =
+        hasHistory;
+
+    DOM.clearHistory.hidden =
+        !hasHistory;
 
     if (!hasHistory) {
         return;
     }
 
     history.forEach((item) => {
-        const listItem = document.createElement("li");
-        listItem.classList.add("history__item");
+        const listItem =
+            createHistoryItem(
+                item,
+                language
+            );
 
-        const mainText = document.createElement("p");
-        mainText.classList.add("history__main");
+        DOM.historyList.appendChild(
+            listItem
+        );
+    });
+}
 
-        const amountFormatter = new Intl.NumberFormat(
-            language === "es" ? "es-ES" : "en-US",
-            {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }
+/* ==========================================================
+   CREAR ELEMENTO DEL HISTORIAL
+========================================================== */
+
+function createHistoryItem(
+    item,
+    language
+) {
+    const listItem =
+        document.createElement("li");
+
+    listItem.classList.add(
+        "history__item"
+    );
+
+    const mainContent =
+        createHistoryMainContent(
+            item,
+            language
         );
 
-        mainText.textContent =
-            `${amountFormatter.format(item.amount)} `
-            + `${item.from} → `
-            + `${amountFormatter.format(item.result)} `
-            + `${item.to}`;
+    const rateText =
+        document.createElement("p");
 
-        const rateText = document.createElement("p");
-        rateText.classList.add("history__rate");
+    rateText.classList.add(
+        "history__rate"
+    );
 
-        const rateFormatter = new Intl.NumberFormat(
-            language === "es" ? "es-ES" : "en-US",
-            {
-                minimumFractionDigits: 4,
-                maximumFractionDigits: 6
-            }
-        );
+    rateText.textContent =
+        `1 ${item.from} = `
+        + `${formatRate(item.unitRate, language)} `
+        + `${item.to}`;
 
-        rateText.textContent =
-            `1 ${item.from} = `
-            + `${rateFormatter.format(item.unitRate)} `
-            + `${item.to}`;
+    const dateText =
+        document.createElement("time");
 
-        const dateText = document.createElement("time");
-        dateText.classList.add("history__date");
+    dateText.classList.add(
+        "history__date"
+    );
 
-        dateText.dateTime = item.createdAt;
+    dateText.dateTime =
+        item.createdAt;
 
-        dateText.textContent = formatDateTime(
+    dateText.textContent =
+        formatDateTime(
             item.createdAt,
             language
         );
 
-        listItem.appendChild(mainText);
-        listItem.appendChild(rateText);
-        listItem.appendChild(dateText);
+    listItem.appendChild(mainContent);
+    listItem.appendChild(rateText);
+    listItem.appendChild(dateText);
 
-        DOM.historyList.appendChild(listItem);
-    });
+    return listItem;
+}
+
+/* ==========================================================
+   CONTENIDO PRINCIPAL DEL HISTORIAL
+========================================================== */
+
+function createHistoryMainContent(
+    item,
+    language
+) {
+    const mainContent =
+        document.createElement("div");
+
+    mainContent.classList.add(
+        "history__main"
+    );
+
+    const fromCurrency =
+        getCurrencyByCode(item.from);
+
+    const toCurrency =
+        getCurrencyByCode(item.to);
+
+    const fromGroup =
+        createHistoryCurrencyGroup({
+            currency: fromCurrency,
+            value:
+                `${formatNumber(
+                    item.amount,
+                    language
+                )} ${item.from}`
+        });
+
+    const historyArrow =
+        document.createElement("span");
+
+    historyArrow.classList.add(
+        "history__arrow"
+    );
+
+    historyArrow.textContent = "→";
+
+    historyArrow.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+    const toGroup =
+        createHistoryCurrencyGroup({
+            currency: toCurrency,
+            value:
+                `${formatNumber(
+                    item.result,
+                    language
+                )} ${item.to}`
+        });
+
+    mainContent.appendChild(fromGroup);
+    mainContent.appendChild(historyArrow);
+    mainContent.appendChild(toGroup);
+
+    return mainContent;
+}
+
+/* ==========================================================
+   GRUPO DE MONEDA DEL HISTORIAL
+========================================================== */
+
+function createHistoryCurrencyGroup({
+    currency,
+    value
+}) {
+    const group =
+        document.createElement("span");
+
+    group.classList.add(
+        "history__currency"
+    );
+
+    if (currency) {
+        group.appendChild(
+            createCurrencyFlag(
+                currency,
+                "history__flag"
+            )
+        );
+    }
+
+    const valueElement =
+        document.createElement("strong");
+
+    valueElement.textContent = value;
+
+    group.appendChild(valueElement);
+
+    return group;
 }
 
 /* ==========================================================
@@ -313,6 +468,7 @@ export function updateThemeButton(
     label
 ) {
     DOM.themeToggle.textContent = icon;
+
     DOM.themeToggle.setAttribute(
         "aria-label",
         label
@@ -327,18 +483,24 @@ function formatDateTime(
     dateValue,
     language
 ) {
-    const date = new Date(dateValue);
+    const date =
+        new Date(dateValue);
 
-    if (Number.isNaN(date.getTime())) {
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
         return "—";
     }
 
     return new Intl.DateTimeFormat(
-        language === "es" ? "es-ES" : "en-GB",
+        language === "es"
+            ? "es-ES"
+            : "en-GB",
         {
             dateStyle: "medium",
-            timeStyle: "short",
-            timeZone: "UTC"
+            timeStyle: "short"
         }
     ).format(date);
 }
