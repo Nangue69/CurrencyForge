@@ -17,6 +17,8 @@ const STORAGE_KEYS = {
 
     HISTORY: "currencyforge-history",
 
+    FAVORITES: "currencyforge-favorites",
+
     LAST_RATES: "currencyforge-last-rates",
 
     LAST_UPDATE: "currencyforge-last-update"

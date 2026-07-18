@@ -1,4 +1,3 @@
-
 /* ==========================================================
    CURRENCYFORGE
    I18N.JS
@@ -57,13 +56,22 @@ const TRANSLATIONS = {
             toAria: "Moneda de destino",
 
             selectPlaceholder: "Seleccionar moneda",
-            searchPlaceholder: "Buscar por código o nombre...",
-            noResults: "No se encontraron monedas."
+            searchPlaceholder:
+                "Buscar por código o nombre...",
+            noResults:
+                "No se encontraron monedas."
         },
 
         buttons: {
             convert: "Convertir",
             swap: "Intercambiar monedas"
+        },
+
+        favorites: {
+            add:
+                "Añadir {currency} a favoritos",
+            remove:
+                "Eliminar {currency} de favoritos"
         },
 
         result: {
@@ -76,15 +84,23 @@ const TRANSLATIONS = {
         },
 
         history: {
-            title: "Historial de conversiones",
-            empty: "Todavía no hay conversiones guardadas.",
-            clear: "Vaciar historial",
-            countLabel: "Número de conversiones guardadas"
+            title:
+                "Historial de conversiones",
+            empty:
+                "Todavía no hay conversiones guardadas.",
+            clear:
+                "Vaciar historial",
+            countLabel:
+                "Número de conversiones guardadas"
         },
 
         messages: {
-            loadingRates: "Cargando tipos de cambio...",
-            ratesLoaded: "Tipos de cambio actualizados.",
+            loadingRates:
+                "Cargando tipos de cambio...",
+            ratesLoaded:
+                "Tipos de cambio actualizados.",
+            favoriteLimit:
+                "Solo puedes guardar hasta 5 monedas favoritas.",
             invalidAmount:
                 "Introduce una cantidad válida mayor que cero.",
             missingCurrency:
@@ -117,7 +133,8 @@ const TRANSLATIONS = {
     en: {
 
         meta: {
-            title: "CurrencyForge | Currency Converter",
+            title:
+                "CurrencyForge | Currency Converter",
             description:
                 "A modern, responsive and easy-to-use currency converter."
         },
@@ -131,8 +148,10 @@ const TRANSLATIONS = {
         controls: {
             languageLabel: "Language",
             themeToggle: "Change theme",
-            enableLightTheme: "Switch to light mode",
-            enableDarkTheme: "Switch to dark mode"
+            enableLightTheme:
+                "Switch to light mode",
+            enableDarkTheme:
+                "Switch to dark mode"
         },
 
         converter: {
@@ -142,14 +161,24 @@ const TRANSLATIONS = {
             fromAria: "Source currency",
             toAria: "Target currency",
 
-            selectPlaceholder: "Select currency",
-            searchPlaceholder: "Search by code or name...",
-            noResults: "No currencies found."
+            selectPlaceholder:
+                "Select currency",
+            searchPlaceholder:
+                "Search by code or name...",
+            noResults:
+                "No currencies found."
         },
 
         buttons: {
             convert: "Convert",
             swap: "Swap currencies"
+        },
+
+        favorites: {
+            add:
+                "Add {currency} to favorites",
+            remove:
+                "Remove {currency} from favorites"
         },
 
         result: {
@@ -162,15 +191,23 @@ const TRANSLATIONS = {
         },
 
         history: {
-            title: "Conversion history",
-            empty: "There are no saved conversions yet.",
-            clear: "Clear history",
-            countLabel: "Number of saved conversions"
+            title:
+                "Conversion history",
+            empty:
+                "There are no saved conversions yet.",
+            clear:
+                "Clear history",
+            countLabel:
+                "Number of saved conversions"
         },
 
         messages: {
-            loadingRates: "Loading exchange rates...",
-            ratesLoaded: "Exchange rates updated.",
+            loadingRates:
+                "Loading exchange rates...",
+            ratesLoaded:
+                "Exchange rates updated.",
+            favoriteLimit:
+                "You can save up to 5 favorite currencies.",
             invalidAmount:
                 "Enter a valid amount greater than zero.",
             missingCurrency:
@@ -218,12 +255,16 @@ function normalizeLanguage(language) {
    BUSCAR TRADUCCIÓN ANIDADA
 ========================================================== */
 
-function getNestedTranslation(language, key) {
+function getNestedTranslation(
+    language,
+    key
+) {
 
     return key
         .split(".")
         .reduce(
-            (value, currentKey) => value?.[currentKey],
+            (value, currentKey) =>
+                value?.[currentKey],
             TRANSLATIONS[language]
         );
 
@@ -237,7 +278,9 @@ export function getCurrentLanguage() {
 
     const settings = loadSettings();
 
-    return normalizeLanguage(settings.language);
+    return normalizeLanguage(
+        settings.language
+    );
 
 }
 
@@ -247,7 +290,8 @@ export function getCurrentLanguage() {
 
 export function setLanguage(language) {
 
-    const selectedLanguage = normalizeLanguage(language);
+    const selectedLanguage =
+        normalizeLanguage(language);
 
     saveLanguage(selectedLanguage);
 
@@ -258,20 +302,87 @@ export function setLanguage(language) {
 }
 
 /* ==========================================================
+   REEMPLAZAR VARIABLES
+========================================================== */
+
+function replaceTranslationVariables(
+    translation,
+    replacements
+) {
+
+    return Object
+        .entries(replacements)
+        .reduce(
+            (
+                text,
+                [name, value]
+            ) => {
+
+                return text
+                    .split(`{${name}}`)
+                    .join(String(value));
+
+            },
+            translation
+        );
+
+}
+
+/* ==========================================================
    TRADUCIR UNA CLAVE
 ========================================================== */
 
 export function translate(
     key,
+    replacementsOrLanguage = {},
     language = getCurrentLanguage()
 ) {
 
-    const selectedLanguage = normalizeLanguage(language);
+    /*
+     * Mantiene compatibilidad con llamadas antiguas:
+     *
+     * translate("meta.title", "en")
+     *
+     * y permite reemplazos:
+     *
+     * translate("favorites.add", {
+     *     currency: "EUR"
+     * })
+     */
 
-    return (
-        getNestedTranslation(selectedLanguage, key)
-        || getNestedTranslation(DEFAULT_LANGUAGE, key)
-        || key
+    const secondArgumentIsLanguage =
+        typeof replacementsOrLanguage
+        === "string";
+
+    const replacements =
+        secondArgumentIsLanguage
+            ? {}
+            : replacementsOrLanguage;
+
+    const requestedLanguage =
+        secondArgumentIsLanguage
+            ? replacementsOrLanguage
+            : language;
+
+    const selectedLanguage =
+        normalizeLanguage(
+            requestedLanguage
+        );
+
+    const translation =
+        getNestedTranslation(
+            selectedLanguage,
+            key
+        )
+        || getNestedTranslation(
+            DEFAULT_LANGUAGE,
+            key
+        )
+        || key;
+
+    return replaceTranslationVariables(
+        translation,
+        replacements
     );
 
 }
@@ -284,53 +395,74 @@ export function translatePage(
     language = getCurrentLanguage()
 ) {
 
-    const selectedLanguage = normalizeLanguage(language);
+    const selectedLanguage =
+        normalizeLanguage(language);
 
-    document.documentElement.lang = selectedLanguage;
+    document.documentElement.lang =
+        selectedLanguage;
 
     document
         .querySelectorAll("[data-i18n]")
         .forEach((element) => {
 
-            const key = element.dataset.i18n;
+            const key =
+                element.dataset.i18n;
 
-            element.textContent = translate(
-                key,
-                selectedLanguage
-            );
+            element.textContent =
+                translate(
+                    key,
+                    {},
+                    selectedLanguage
+                );
 
         });
 
     document
-        .querySelectorAll("[data-i18n-aria]")
+        .querySelectorAll(
+            "[data-i18n-aria]"
+        )
         .forEach((element) => {
 
-            const key = element.dataset.i18nAria;
+            const key =
+                element.dataset.i18nAria;
 
             element.setAttribute(
                 "aria-label",
-                translate(key, selectedLanguage)
+                translate(
+                    key,
+                    {},
+                    selectedLanguage
+                )
             );
 
         });
 
     document
-        .querySelectorAll("[data-i18n-content]")
+        .querySelectorAll(
+            "[data-i18n-content]"
+        )
         .forEach((element) => {
 
-            const key = element.dataset.i18nContent;
+            const key =
+                element.dataset.i18nContent;
 
             element.setAttribute(
                 "content",
-                translate(key, selectedLanguage)
+                translate(
+                    key,
+                    {},
+                    selectedLanguage
+                )
             );
 
         });
 
-    document.title = translate(
-        "meta.title",
-        selectedLanguage
-    );
+    document.title =
+        translate(
+            "meta.title",
+            {},
+            selectedLanguage
+        );
 
     return selectedLanguage;
 

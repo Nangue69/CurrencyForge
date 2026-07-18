@@ -23,6 +23,13 @@ import {
 } from "./settings.js";
 
 import {
+    loadFavorites,
+    isFavorite,
+    toggleFavorite,
+    sortCurrenciesByFavorites
+} from "./favorites.js";
+
+import {
     applyTheme,
     getCurrentTheme,
     getThemeIcon,
@@ -87,7 +94,10 @@ function createCurrencyContent(currency) {
     const language = getCurrentLanguage();
 
     const wrapper = document.createElement("span");
-    wrapper.classList.add("currency-option");
+
+    wrapper.classList.add(
+        "currency-option"
+    );
 
     /* ==============================
        BANDERA
@@ -95,14 +105,16 @@ function createCurrencyContent(currency) {
 
     const flag = document.createElement("img");
 
-    flag.classList.add("currency-option__flag");
+    flag.classList.add(
+        "currency-option__flag"
+    );
 
-    flag.src = getCurrencyFlagPath(currency);
+    flag.src =
+        getCurrencyFlagPath(currency);
 
     flag.alt = "";
 
     flag.loading = "lazy";
-
     flag.decoding = "async";
 
     flag.setAttribute(
@@ -114,15 +126,29 @@ function createCurrencyContent(currency) {
        INFORMACIÓN
     ============================== */
 
-    const information = document.createElement("span");
-    information.classList.add("currency-option__information");
+    const information =
+        document.createElement("span");
 
-    const code = document.createElement("strong");
-    code.classList.add("currency-option__code");
-    code.textContent = currency.code;
+    information.classList.add(
+        "currency-option__information"
+    );
 
-    const name = document.createElement("span");
-    name.classList.add("currency-option__name");
+    const code =
+        document.createElement("strong");
+
+    code.classList.add(
+        "currency-option__code"
+    );
+
+    code.textContent =
+        currency.code;
+
+    const name =
+        document.createElement("span");
+
+    name.classList.add(
+        "currency-option__name"
+    );
 
     name.textContent =
         getCurrencyName(
@@ -137,8 +163,12 @@ function createCurrencyContent(currency) {
        SÍMBOLO
     ============================== */
 
-    const symbol = document.createElement("span");
-    symbol.classList.add("currency-option__symbol");
+    const symbol =
+        document.createElement("span");
+
+    symbol.classList.add(
+        "currency-option__symbol"
+    );
 
     symbol.textContent =
         currency.symbol;
@@ -152,7 +182,96 @@ function createCurrencyContent(currency) {
     wrapper.appendChild(symbol);
 
     return wrapper;
+
 }
+
+function createCurrencyOptionContent(currency) {
+
+    const wrapper = document.createElement("span");
+
+    wrapper.classList.add(
+        "currency-option-wrapper"
+    );
+
+    const content =
+        createCurrencyContent(currency);
+
+    const favoriteButton =
+        document.createElement("button");
+
+    const favorite =
+        isFavorite(currency.code);
+
+    favoriteButton.type = "button";
+
+    favoriteButton.classList.add(
+        "currency-option__favorite"
+    );
+
+    favoriteButton.dataset.forgeAction =
+        "favorite";
+
+    favoriteButton.dataset.currencyCode =
+        currency.code;
+
+    favoriteButton.textContent =
+        favorite ? "★" : "☆";
+
+    favoriteButton.setAttribute(
+        "aria-pressed",
+        String(favorite)
+    );
+
+    favoriteButton.setAttribute(
+        "aria-label",
+        translate(
+            favorite
+                ? "favorites.remove"
+                : "favorites.add",
+            {
+                currency: currency.code
+            }
+        )
+    );
+
+    favoriteButton.addEventListener(
+        "click",
+        (event) => {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            const result =
+                toggleFavorite(currency.code);
+
+            if (!result.success) {
+
+                showFeedback(
+                    DOM,
+                    translate(result.errorKey),
+                    "warning"
+                );
+
+                return;
+
+            }
+
+            clearFeedback(DOM);
+
+            refreshCurrencySelectorsAfterFavoriteChange(
+                result.favorites
+            );
+
+        }
+    );
+
+    wrapper.appendChild(content);
+    wrapper.appendChild(favoriteButton);
+
+    return wrapper;
+
+}
+
 
 function getCurrencySearchText(currency) {
     return [
@@ -165,14 +284,44 @@ function getCurrencySearchText(currency) {
     ].join(" ");
 }
 
+function refreshCurrencySelectorsAfterFavoriteChange(
+    favorites
+) {
+    const fromCurrency =
+        appState.fromSelect.getValue();
+
+    const toCurrency =
+        appState.toSelect.getValue();
+
+    const currencies =
+        sortCurrenciesByFavorites(
+            CURRENCIES,
+            favorites
+        );
+
+    appState.fromSelect.setItems(currencies);
+    appState.toSelect.setItems(currencies);
+
+    appState.fromSelect.setValue(fromCurrency);
+    appState.toSelect.setValue(toCurrency);
+}
+
 /* ==========================================================
    CREAR FORGE SELECTS
 ========================================================== */
 
 function initializeCurrencySelectors(settings) {
+
+    const favorites = loadFavorites();
+
+    const currencies = sortCurrenciesByFavorites(
+        CURRENCIES,
+        favorites
+    );
+
     appState.fromSelect = createForgeSelect({
         root: DOM.fromCurrencyRoot,
-        items: CURRENCIES,
+        items: currencies,
         value: settings.fromCurrency,
 
         placeholder:
@@ -196,14 +345,14 @@ function initializeCurrencySelectors(settings) {
         getSearchText: getCurrencySearchText,
 
         renderSelected: createCurrencyContent,
-        renderOption: createCurrencyContent,
+        renderOption: createCurrencyOptionContent,
 
         onChange: handleCurrencySelectionChange
     });
 
     appState.toSelect = createForgeSelect({
         root: DOM.toCurrencyRoot,
-        items: CURRENCIES,
+        items: currencies,
         value: settings.toCurrency,
 
         placeholder:
@@ -227,7 +376,7 @@ function initializeCurrencySelectors(settings) {
         getSearchText: getCurrencySearchText,
 
         renderSelected: createCurrencyContent,
-        renderOption: createCurrencyContent,
+        renderOption: createCurrencyOptionContent,
 
         onChange: handleCurrencySelectionChange
     });
@@ -402,12 +551,46 @@ async function handleConversion() {
    INTERCAMBIAR MONEDAS
 ========================================================== */
 
+/* ==========================================================
+   INTERCAMBIAR MONEDAS
+========================================================== */
+
 function handleCurrencySwap() {
     const currentFrom =
         appState.fromSelect.getValue();
 
     const currentTo =
         appState.toSelect.getValue();
+
+    DOM.swapCurrencies.classList.remove(
+        "swap-button--animating"
+    );
+
+    DOM.fromCurrencyRoot.classList.remove(
+        "currency-select-root--swap-left"
+    );
+
+    DOM.toCurrencyRoot.classList.remove(
+        "currency-select-root--swap-right"
+    );
+
+    /*
+     * Fuerza al navegador a reiniciar la animación,
+     * incluso al pulsar varias veces seguidas.
+     */
+    void DOM.swapCurrencies.offsetWidth;
+
+    DOM.swapCurrencies.classList.add(
+        "swap-button--animating"
+    );
+
+    DOM.fromCurrencyRoot.classList.add(
+        "currency-select-root--swap-left"
+    );
+
+    DOM.toCurrencyRoot.classList.add(
+        "currency-select-root--swap-right"
+    );
 
     appState.fromSelect.setValue(currentTo);
     appState.toSelect.setValue(currentFrom);
@@ -453,8 +636,16 @@ function refreshForgeSelectLanguage() {
             translate("converter.noResults")
     };
 
-    appState.fromSelect.setItems(CURRENCIES);
-    appState.toSelect.setItems(CURRENCIES);
+    const favorites = loadFavorites();
+
+    const currencies =
+        sortCurrenciesByFavorites(
+            CURRENCIES,
+            favorites
+        );
+
+    appState.fromSelect.setItems(currencies);
+    appState.toSelect.setItems(currencies);
 
     appState.fromSelect.refresh(configuration);
     appState.toSelect.refresh(configuration);
@@ -543,6 +734,33 @@ function addEvents() {
     DOM.swapCurrencies.addEventListener(
         "click",
         handleCurrencySwap
+    );
+
+    DOM.swapCurrencies.addEventListener(
+        "animationend",
+        () => {
+            DOM.swapCurrencies.classList.remove(
+                "swap-button--animating"
+            );
+        }
+    );
+
+    DOM.fromCurrencyRoot.addEventListener(
+        "animationend",
+        () => {
+            DOM.fromCurrencyRoot.classList.remove(
+                "currency-select-root--swap-left"
+            );
+        }
+    );
+
+    DOM.toCurrencyRoot.addEventListener(
+        "animationend",
+        () => {
+            DOM.toCurrencyRoot.classList.remove(
+                "currency-select-root--swap-right"
+            );
+        }
     );
 
     DOM.languageSelector.addEventListener(

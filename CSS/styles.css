@@ -63,8 +63,18 @@
     --spacing-7: 3.2rem;
     --spacing-8: 4rem;
 
-    --transition-fast: 160ms ease;
-    --transition-normal: 260ms ease;
+    --forge-duration-fast: 120ms;
+    --forge-duration-normal: 180ms;
+    --forge-duration-slow: 260ms;
+
+    --forge-ease:
+        cubic-bezier(0.2, 0.8, 0.2, 1);
+
+    --transition-fast:
+        var(--forge-duration-fast) var(--forge-ease);
+
+    --transition-normal:
+        var(--forge-duration-slow) var(--forge-ease);
 }
 
 /* ==========================================================
@@ -439,6 +449,124 @@ summary {
 
     color: var(--color-danger);
     font-size: 1.3rem;
+}
+
+/* ==========================================================
+   FAVORITOS DE MONEDAS
+========================================================== */
+
+.currency-option-wrapper {
+    display: flex;
+    align-items: center;
+
+    gap: var(--spacing-2);
+
+    width: 100%;
+    min-width: 0;
+}
+
+.currency-option-wrapper .currency-option {
+    flex: 1;
+    min-width: 0;
+}
+
+.currency-option__favorite {
+    display: grid;
+    place-items: center;
+
+    flex: 0 0 auto;
+
+    width: 4.4rem;
+    height: 4.4rem;
+
+    padding: 0;
+
+    color: var(--color-text-muted);
+    font-size: 2.2rem;
+    line-height: 1;
+
+    background: transparent;
+
+    border: 0;
+    border-radius: 50%;
+
+    transition:
+        color var(--transition-fast),
+        background-color var(--transition-fast),
+        transform var(--transition-fast);
+}
+
+.currency-option__favorite:hover {
+    color: var(--color-warning);
+    background: var(--color-primary-soft);
+
+    transform: scale(1.08);
+}
+
+.currency-option__favorite[aria-pressed="true"] {
+    color: var(--color-warning);
+}
+
+.currency-option__favorite:active {
+    transform: scale(0.92);
+}
+
+/* Contenido de la moneda */
+
+.currency-option {
+    display: flex;
+    align-items: center;
+
+    gap: var(--spacing-2);
+
+    width: 100%;
+    min-width: 0;
+}
+
+.currency-option__flag {
+    flex: 0 0 2.8rem;
+
+    width: 2.8rem;
+    height: 2rem;
+
+    object-fit: cover;
+
+    border-radius: 0.2rem;
+}
+
+.currency-option__information {
+    display: grid;
+
+    flex: 1;
+    min-width: 0;
+}
+
+.currency-option__code,
+.currency-option__name {
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.currency-option__symbol {
+    flex: 0 0 auto;
+
+    margin-left: auto;
+    padding-left: var(--spacing-2);
+}
+
+/* Separación entre el símbolo y la flecha */
+
+.forge-select__selected {
+    flex: 1;
+    min-width: 0;
+}
+
+.forge-select__arrow {
+    flex: 0 0 auto;
+
+    margin-left: var(--spacing-3);
 }
 
 /* ==========================================================
@@ -1019,4 +1147,123 @@ summary {
 .history__arrow {
     color: var(--color-primary);
     font-weight: 900;
+}
+
+/* ==========================================================
+   FORGE MICROINTERACTIONS
+========================================================== */
+
+/* Intercambio de monedas */
+
+.swap-button {
+    will-change: transform;
+}
+
+.swap-button--animating {
+    animation:
+        forge-swap-rotate var(--forge-duration-normal) var(--forge-ease);
+}
+
+.currency-select-root {
+    will-change: transform, opacity;
+}
+
+.currency-select-root--swap-left {
+    animation:
+        forge-swap-left var(--forge-duration-normal) var(--forge-ease);
+}
+
+.currency-select-root--swap-right {
+    animation:
+        forge-swap-right var(--forge-duration-normal) var(--forge-ease);
+}
+
+/* Resultado actualizado */
+
+.result--refreshing {
+    animation:
+        forge-result-refresh var(--forge-duration-slow) var(--forge-ease);
+}
+
+/* Nuevo elemento del historial */
+
+.history__item {
+    animation:
+        forge-history-item-in var(--forge-duration-slow) var(--forge-ease);
+}
+
+/* ==========================================================
+   KEYFRAMES
+========================================================== */
+
+@keyframes forge-swap-rotate {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+
+    50% {
+        transform: rotate(90deg) scale(0.92);
+    }
+
+    100% {
+        transform: rotate(180deg) scale(1);
+    }
+}
+
+@keyframes forge-swap-left {
+    0% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    50% {
+        opacity: 0.35;
+        transform: translateX(1.2rem);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes forge-swap-right {
+    0% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    50% {
+        opacity: 0.35;
+        transform: translateX(-1.2rem);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes forge-result-refresh {
+    0% {
+        opacity: 0.45;
+        transform: translateY(0.5rem) scale(0.99);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes forge-history-item-in {
+    from {
+        opacity: 0;
+        transform: translateY(0.8rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
