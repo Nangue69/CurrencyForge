@@ -14,8 +14,7 @@
 
     <link rel="stylesheet" href="./CSS/styles.css">
 
-    <script type="module" src="./js/app.js" defer>
-    </script>
+    <script type="module" src="./js/app.js" defer></script>
 </head>
 
 <body>
@@ -25,12 +24,12 @@
         <section class="converter" aria-labelledby="app-title">
 
             <!-- =====================================================
-           CABECERA
-      ====================================================== -->
+                CABECERA
+            ====================================================== -->
 
             <header class="converter__header">
 
-                <div class="converter__toolbar" aria-label="Preferencias de la aplicación">
+                <div class="converter__toolbar" role="group" aria-label="Preferencias de la aplicación">
 
                     <label class="language-control" for="language-selector">
 
@@ -38,7 +37,7 @@
                             Idioma
                         </span>
 
-                        <select id="language-selector" class="language-control__select" aria-label="Idioma">
+                        <select id="language-selector" class="language-control__select">
 
                             <option value="es">
                                 🇪🇸 Español
@@ -54,9 +53,7 @@
 
                     <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Cambiar a modo oscuro"
                         data-i18n-aria="controls.themeToggle">
-
                         🌙
-
                     </button>
 
                 </div>
@@ -70,33 +67,27 @@
                 </div>
 
                 <h1 id="app-title" class="converter__title" data-i18n="app.title">
-
                     CurrencyForge
-
                 </h1>
 
                 <p class="converter__subtitle" data-i18n="app.subtitle">
-
                     Convierte monedas de forma rápida y sencilla.
-
                 </p>
 
             </header>
 
             <!-- =====================================================
-           FORMULARIO
-      ====================================================== -->
+                FORMULARIO
+            ====================================================== -->
 
             <form id="converter-form" class="converter__form" novalidate>
 
                 <!-- Cantidad -->
 
-                <section class="panel">
+                <div class="panel">
 
                     <label class="field__label" for="amount" data-i18n="converter.amountLabel">
-
                         Cantidad
-
                     </label>
 
                     <div class="amount-field">
@@ -106,25 +97,21 @@
 
                     </div>
 
-                    <p id="amount-error" class="field-error" aria-live="polite">
-                    </p>
+                    <p id="amount-error" class="field-error" aria-live="polite"></p>
 
-                </section>
+                </div>
 
                 <!-- Moneda de origen -->
 
-                <section class="panel currency-panel">
+                <div class="panel currency-panel">
 
                     <span id="from-currency-label" class="field__label" data-i18n="converter.fromLabel">
-
                         De
-
                     </span>
 
-                    <div id="from-currency" class="currency-select-root" aria-labelledby="from-currency-label">
-                    </div>
+                    <div id="from-currency" class="currency-select-root" aria-labelledby="from-currency-label"></div>
 
-                </section>
+                </div>
 
                 <!-- Intercambiar monedas -->
 
@@ -143,87 +130,69 @@
 
                 <!-- Moneda de destino -->
 
-                <section class="panel currency-panel">
+                <div class="panel currency-panel">
 
                     <span id="to-currency-label" class="field__label" data-i18n="converter.toLabel">
-
                         A
-
                     </span>
 
-                    <div id="to-currency" class="currency-select-root" aria-labelledby="to-currency-label">
-                    </div>
+                    <div id="to-currency" class="currency-select-root" aria-labelledby="to-currency-label"></div>
 
-                </section>
+                </div>
 
                 <!-- Botón de conversión -->
 
                 <button id="convert-button" class="button" type="submit" data-i18n="buttons.convert">
-
                     Convertir
-
                 </button>
 
             </form>
 
             <!-- =====================================================
-           ESTADO Y MENSAJES
-      ====================================================== -->
+                ESTADO Y MENSAJES
+            ====================================================== -->
 
             <section class="messages" aria-live="polite" aria-atomic="true">
 
-                <p id="feedback" class="feedback">
-                </p>
+                <p id="feedback" class="feedback"></p>
 
             </section>
 
             <!-- =====================================================
-           RESULTADO
-      ====================================================== -->
+                RESULTADO
+            ====================================================== -->
 
             <section id="result-panel" class="result" aria-labelledby="result-title" hidden>
 
                 <h2 id="result-title" class="result__title" data-i18n="result.title">
-
                     Resultado
-
                 </h2>
 
                 <p id="result-main" class="result__main">
-
                     1,00 EUR = 1,00 USD
-
                 </p>
 
                 <p id="result-route" class="result__route">
-
                     🇪🇺 Euro → 🇺🇸 US Dollar
-
                 </p>
 
                 <p id="result-rate" class="result__rate">
-
                     1 EUR = 1,0000 USD
-
                 </p>
 
                 <p id="result-updated" class="result__updated">
-
                     Actualizado: —
-
                 </p>
 
                 <p id="result-source" class="result__source">
-
                     Tipos de cambio proporcionados por MoneyConvert.net
-
                 </p>
 
             </section>
 
             <!-- =====================================================
-           HISTORIAL
-      ====================================================== -->
+                HISTORIAL
+            ====================================================== -->
 
             <details id="history" class="history">
 
@@ -233,10 +202,9 @@
                         Historial de conversiones
                     </span>
 
-                    <span id="history-count" class="history__count" aria-label="Número de conversiones guardadas">
-
+                    <span id="history-count" class="history__count" aria-label="Número de conversiones guardadas"
+                        data-i18n-aria="history.countLabel">
                         0
-
                     </span>
 
                 </summary>
@@ -250,15 +218,11 @@
                     </ol>
 
                     <p id="history-empty" class="history__empty" data-i18n="history.empty">
-
                         Todavía no hay conversiones guardadas.
-
                     </p>
 
                     <button id="clear-history" class="history__clear" type="button" data-i18n="history.clear">
-
                         Vaciar historial
-
                     </button>
 
                 </div>
@@ -266,22 +230,18 @@
             </details>
 
             <!-- =====================================================
-           INFORMACIÓN
-      ====================================================== -->
+                INFORMACIÓN
+            ====================================================== -->
 
             <footer class="converter__footer">
 
                 <p data-i18n="footer.privacy">
-
                     Las conversiones se procesan localmente en tu navegador.
-
                 </p>
 
                 <p data-i18n="footer.rates">
-
-                    Los tipos de cambio pueden variar respecto a los ofrecidos por bancos
-                    y proveedores de pago.
-
+                    Los tipos de cambio pueden variar respecto a los ofrecidos
+                    por bancos y proveedores de pago.
                 </p>
 
             </footer>
