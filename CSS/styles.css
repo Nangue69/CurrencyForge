@@ -293,8 +293,31 @@ summary {
         transform var(--transition-fast);
 }
 
+.language-control {
+    position: relative;
+
+    display: inline-flex;
+    align-items: center;
+}
+
+.language-control__flag {
+    position: absolute;
+    left: 1.2rem;
+    z-index: 1;
+
+    width: 2.2rem;
+    height: 1.6rem;
+
+    object-fit: cover;
+
+    border-radius: 0.2rem;
+
+    pointer-events: none;
+}
+
 .language-control__select {
-    padding: 0.8rem 1.2rem;
+    padding:
+        0.8rem 1.2rem 0.8rem 4.2rem;
 }
 
 .language-control__select:hover,
@@ -325,18 +348,10 @@ summary {
 }
 
 .converter__logo {
-    display: grid;
-    place-items: center;
+    display: block;
 
     width: 7.2rem;
     height: 7.2rem;
-
-    font-size: 3.6rem;
-
-    background:
-        linear-gradient(135deg,
-            var(--color-primary),
-            #0ea5e9);
 
     border-radius: 2rem;
 

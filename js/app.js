@@ -85,6 +85,25 @@ const appState = {
     toSelect: null
 };
 
+const LANGUAGE_FLAGS = {
+    es: "./img/flags/es.svg",
+    en: "./img/flags/gb.svg"
+};
+
+function updateLanguageFlag(language) {
+    const languageFlag = document.getElementById(
+        "language-flag"
+    );
+
+    if (!languageFlag) {
+        return;
+    }
+
+    languageFlag.src =
+        LANGUAGE_FLAGS[language] ??
+        LANGUAGE_FLAGS.es;
+}
+
 /* ==========================================================
    CONTENIDO VISUAL DE LAS MONEDAS
 ========================================================== */
@@ -658,6 +677,8 @@ function handleLanguageChange() {
 
     DOM.languageSelector.value = language;
 
+    updateLanguageFlag(language);
+
     refreshForgeSelectLanguage();
 
     renderHistory(
@@ -819,6 +840,8 @@ function initializeSettings() {
 
     DOM.languageSelector.value =
         settings.language;
+
+    updateLanguageFlag(settings.language);
 
     translatePage(settings.language);
 
