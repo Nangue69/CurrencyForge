@@ -872,6 +872,34 @@ function initializeHistory() {
     DOM.history.open = false;
 }
 
+
+/* ==========================================================
+   REGISTRAR SERVICE WORKER
+========================================================== */
+
+function registerServiceWorker() {
+    if (!("serviceWorker" in navigator)) {
+        return;
+    }
+
+    window.addEventListener("load", async () => {
+        try {
+            await navigator.serviceWorker.register(
+                "./service-worker.js"
+            );
+
+            console.info(
+                "CurrencyForge service worker registered."
+            );
+        } catch (error) {
+            console.error(
+                "Service worker registration failed:",
+                error
+            );
+        }
+    });
+}
+
 /* ==========================================================
    INICIALIZAR APLICACIÓN
 ========================================================== */
@@ -885,4 +913,5 @@ async function init() {
     await loadRates();
 }
 
+registerServiceWorker();
 init();

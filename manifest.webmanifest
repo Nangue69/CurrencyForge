@@ -7,7 +7,7 @@
     "start_url": "./",
     "scope": "./",
     "display": "standalone",
-    "orientation": "portrait-primary",
+    "orientation": "any",
     "background_color": "#0f172a",
     "theme_color": "#2563eb",
     "icons": [
@@ -34,6 +34,22 @@
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "maskable"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "./assets/screenshots/desktop.png",
+            "sizes": "1670x852",
+            "type": "image/png",
+            "form_factor": "wide",
+            "label": "CurrencyForge desktop interface"
+        },
+        {
+            "src": "./assets/screenshots/mobile.png",
+            "sizes": "919x2047",
+            "type": "image/png",
+            "form_factor": "narrow",
+            "label": "CurrencyForge mobile interface"
         }
     ]
 }
