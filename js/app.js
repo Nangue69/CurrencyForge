@@ -570,10 +570,6 @@ async function handleConversion() {
    INTERCAMBIAR MONEDAS
 ========================================================== */
 
-/* ==========================================================
-   INTERCAMBIAR MONEDAS
-========================================================== */
-
 function handleCurrencySwap() {
     const currentFrom =
         appState.fromSelect.getValue();
@@ -705,7 +701,7 @@ function handleLanguageChange() {
 function updateCurrentThemeButton() {
     const theme =
         document.documentElement.dataset.theme
-        || getCurrentTheme();
+        ?? getCurrentTheme();
 
     updateThemeButton(
         DOM,

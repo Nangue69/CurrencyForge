@@ -10,19 +10,15 @@
 ========================================================== */
 
 const STORAGE_KEYS = {
-
     LANGUAGE: "currencyforge-language",
-
     THEME: "currencyforge-theme",
-
     HISTORY: "currencyforge-history",
-
     FAVORITES: "currencyforge-favorites",
-
     LAST_RATES: "currencyforge-last-rates",
+    LAST_UPDATE: "currencyforge-last-update",
 
-    LAST_UPDATE: "currencyforge-last-update"
-
+    FROM_CURRENCY: "currencyforge-from-currency",
+    TO_CURRENCY: "currencyforge-to-currency"
 };
 
 /* ==========================================================

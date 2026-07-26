@@ -47,12 +47,12 @@ export function loadSettings() {
         ),
 
         fromCurrency: load(
-            "currencyforge-from-currency",
+            STORAGE_KEYS.FROM_CURRENCY,
             DEFAULT_SETTINGS.fromCurrency
         ),
 
         toCurrency: load(
-            "currencyforge-to-currency",
+            STORAGE_KEYS.TO_CURRENCY,
             DEFAULT_SETTINGS.toCurrency
         )
 
@@ -96,12 +96,12 @@ export function saveSelectedCurrencies(
 ) {
 
     save(
-        "currencyforge-from-currency",
+        STORAGE_KEYS.FROM_CURRENCY,
         fromCurrency
     );
 
     save(
-        "currencyforge-to-currency",
+        STORAGE_KEYS.TO_CURRENCY,
         toCurrency
     );
 

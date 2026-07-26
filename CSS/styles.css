@@ -66,6 +66,7 @@
     --forge-duration-fast: 120ms;
     --forge-duration-normal: 180ms;
     --forge-duration-slow: 260ms;
+    --forge-duration-spinner: 700ms;
 
     --forge-ease:
         cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -74,7 +75,7 @@
         var(--forge-duration-fast) var(--forge-ease);
 
     --transition-normal:
-        var(--forge-duration-slow) var(--forge-ease);
+        var(--forge-duration-normal) var(--forge-ease);
 }
 
 /* ==========================================================
@@ -288,6 +289,7 @@ summary {
     border-radius: var(--radius-pill);
 
     transition:
+        color var(--transition-fast),
         background-color var(--transition-fast),
         border-color var(--transition-fast),
         transform var(--transition-fast);
@@ -454,11 +456,12 @@ summary {
         0 0 0 0.4rem var(--color-primary-soft);
 }
 
-.amount-field__input[aria-invalid="true"] {
-    border-color: var(--color-danger);
+.amount-field__input:focus-visible,
+.currency-select:focus-visible {
+    border-color: var(--color-primary);
 
     box-shadow:
-        0 0 0 0.4rem rgba(220, 38, 38, 0.12);
+        0 0 0 0.4rem var(--color-primary-soft);
 }
 
 .currency-select {
@@ -517,6 +520,7 @@ summary {
     transition:
         color var(--transition-fast),
         background-color var(--transition-fast),
+        border-color var(--transition-fast),
         transform var(--transition-fast);
 }
 
@@ -715,7 +719,8 @@ summary {
 .feedback--visible {
     display: block;
 
-    animation: feedback-in var(--transition-normal);
+    animation:
+        feedback-in var(--forge-duration-normal) var(--forge-ease);
 }
 
 .feedback[data-type="success"] {
@@ -760,7 +765,8 @@ summary {
     border: 0.1rem solid var(--color-primary);
     border-radius: var(--radius-large);
 
-    animation: result-in 320ms ease;
+
+    animation: result-in var(--forge-duration-slow) var(--forge-ease);
 }
 
 .result__title {
@@ -854,6 +860,10 @@ summary {
     transition:
         background-color var(--transition-fast);
 
+}
+
+.history__summary::-webkit-details-marker {
+    display: none;
 }
 
 .history__summary::after {
@@ -1093,7 +1103,10 @@ summary {
 
     transform: translate(-50%, -50%);
 
-    animation: button-spinner 700ms linear infinite;
+    animation:
+        button-spinner var(--forge-duration-spinner) linear infinite;
+
+    pointer-events: none;
 }
 
 @keyframes button-spinner {
@@ -1179,18 +1192,19 @@ summary {
 
 /* Intercambio de monedas */
 
-.swap-button {
-    will-change: transform;
-}
 
 .swap-button--animating {
+    will-change: transform;
+
     animation:
         forge-swap-rotate var(--forge-duration-normal) var(--forge-ease);
 }
 
-.currency-select-root {
+.currency-select-root--swap-left,
+.currency-select-root--swap-right {
     will-change: transform, opacity;
 }
+
 
 .currency-select-root--swap-left {
     animation:
