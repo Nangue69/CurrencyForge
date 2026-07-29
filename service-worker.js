@@ -1,4 +1,4 @@
-const CACHE_NAME = "currencyforge-v1.0.1";
+const CACHE_NAME = "currencyforge-v1.0.0";
 
 const APP_SHELL = [
     "./",
@@ -14,24 +14,28 @@ const APP_SHELL = [
     "./js/currencies.js",
     "./js/dom.js",
     "./js/favorites.js",
+    "./js/format.js",
     "./js/history.js",
     "./js/i18n.js",
     "./js/settings.js",
+    "./js/storage.js",
     "./js/theme.js",
     "./js/ui.js",
     "./js/components/forge-select.js",
 
     "./assets/icons/currencyforge-logo.svg",
+    "./assets/icons/apple-touch-icon.png",
+    "./assets/icons/favicon.ico",
+    "./assets/icons/favicon-16x16.png",
     "./assets/icons/favicon-32x32.png",
+    "./assets/icons/favicon-48x48.png",
     "./assets/icons/icon-192x192.png",
     "./assets/icons/icon-512x512.png",
-
+    "./assets/icons/icon-maskable-192x192.png",
+    "./assets/icons/icon-maskable-512x512.png",
 
     "./img/flags/es.svg",
-    "./img/flags/gb.svg",
-
-    "./assets/screenshots/desktop.png",
-    "./assets/screenshots/mobile.png"
+    "./img/flags/gb.svg"
 ];
 
 /* ==========================================================
@@ -95,22 +99,25 @@ self.addEventListener("fetch", (event) => {
 
             return fetch(event.request).then((networkResponse) => {
                 if (
-                    !networkResponse
-                    || networkResponse.status !== 200
-                    || networkResponse.type !== "basic"
+                    !networkResponse ||
+                    networkResponse.status !== 200 ||
+                    networkResponse.type !== "basic"
                 ) {
                     return networkResponse;
                 }
 
-                const responseToCache =
-                    networkResponse.clone();
+                const responseToCache = networkResponse.clone();
 
-                caches.open(CACHE_NAME).then((cache) => {
-                    cache.put(
-                        event.request,
-                        responseToCache
-                    );
-                });
+                event.waitUntil(
+                    caches
+                        .open(CACHE_NAME)
+                        .then((cache) =>
+                            cache.put(
+                                event.request,
+                                responseToCache
+                            )
+                        )
+                );
 
                 return networkResponse;
             });

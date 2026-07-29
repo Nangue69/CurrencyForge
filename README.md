@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/icons/currencyforge-logo.svg" alt="CurrencyForge Logo" width="140">
+<img src="assets/icons/currencyforge-logo.svg" alt="CurrencyForge Logo" width="180">
 
 # CurrencyForge
 
@@ -36,35 +36,35 @@ A lightweight currency converter built with **Vanilla JavaScript**, focused on *
 
 ## 🚀 Live Demo
 
-> Coming soon... *(GitHub Pages deployment will be available after publication.)*
+> Coming soon... *(GitHub Pages deployment will be available with the first public release.)*
 
 ---
 
 ## 📸 Screenshots
 
-### Desktop
+<p align="center">
+    <img src="assets/screenshots/desktop.png" width="68%">
+</p>
 
-![CurrencyForge Desktop](assets/screenshots/desktop.png)
-
-### Mobile
-
-![CurrencyForge Mobile](assets/screenshots/mobile.png)
-
+<p align="center">
+    <img src="assets/screenshots/mobile.png" width="28%">
+</p>
 ---
 
 ## ✨ Features
 
 - 💱 Real-time currency conversion
+- 📦 Offline support powered by Service Worker
+- ⚡ Progressive Web App (PWA)
+- ♿ Accessibility improvements
+- 🌍 English and Spanish interface
 - ❤️ Favorite currencies
 - 📜 Conversion history
-- 🌍 English and Spanish interface
 - 🎨 Light and dark themes
 - 📱 Fully responsive design
-- ⚡ Progressive Web App (PWA)
-- 📦 Offline support powered by Service Worker
-- ♿ Accessibility improvements
-- 🏳️ SVG-based language selector
 - 🔢 Adaptive number formatting
+- 🏳️ SVG-based language selector
+
 
 ---
 
@@ -73,7 +73,7 @@ A lightweight currency converter built with **Vanilla JavaScript**, focused on *
 - HTML5
 - CSS3
 - Vanilla JavaScript (ES6+)
-- ExchangeRate API
+- ExchangeRate-API
 - LocalStorage
 - Web App Manifest
 - Service Worker
@@ -149,7 +149,7 @@ CurrencyForge currently supports two languages:
 - 🇬🇧 English
 - 🇪🇸 Spanish
 
-The interface can be switched instantly without reloading the page, providing a seamless multilingual experience.S
+The interface can be switched instantly without reloading the page, providing a seamless multilingual experience.
 
 ---
 
@@ -188,6 +188,7 @@ Future improvements planned for CurrencyForge include:
 - [ ] Interactive exchange rate charts
 - [ ] More customization options
 - [ ] Performance optimizations
+- [ ] Automatic exchange rate refresh
 
 ---
 
@@ -203,4 +204,4 @@ See the LICENSE file for more information.
 
 Developed with ❤️ by **Ángel González**.
 
-If you enjoyed this project, consider giving it a ⭐ on GitHub.
+If you found this project useful, consider giving it a ⭐ on GitHub.
