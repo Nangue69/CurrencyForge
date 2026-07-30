@@ -34,9 +34,9 @@ A lightweight currency converter built with **Vanilla JavaScript**, focused on *
 
 ---
 
-## 🚀 Live Demo
+## 🌐 Live Demo
 
-> Coming soon... *(GitHub Pages deployment will be available with the first public release.)*
+👉 **Try it here:** [CurrencyForge Live Demo](https://nangue69.github.io/CurrencyForge/)
 
 ---
 
